@@ -1,0 +1,28 @@
+- mention in README that you can define state machines also adhoc/it does not _need_ to be compile time
+- check how default docs generation behaves with an `as:` in there
+- make the samples proper doc tests so they don't fail
+- initial definition, states may be more like a list of atoms and kwargs in the end of you want
+- make the callable errors include not the state as well as the entry/exit
+  - goal: make it easier to identify in what state what thing was triggered
+- Make sure there are no more references to the builder
+- it's probably more efficient to keep the transitions with the current state in order to look them up more efficiently for
+- run exit/entry/action seem too similar
+- do we need a breadth first search?
+- always updating the data in the actions/entries may not be desirable/needs to be well documented as side effects are also a valid use case and if those just return `nil` we don't want to wipe away all the previous data
+- maybe give guards and actions names? Optional names? Well there aer function names but can we get them into the mermaid diagrams?
+- `add_state` should probably raise if the state already exists
+- no_initial --> no_initial_state
+- test/use case - you can compile a definition and then extend said definition and compile it again
+- check the errors for when guards fail on the included data
+- is `compile!`/`compile` still necessary? We can just run them one way or the other, we could use `validate!`/`validate` instead
+- might want to raise/validate on unreachable states as well
+- Map.fetch! --> proper error for accessing states that don't exist
+
+
+## Guidelines
+
+- mostly prefer `if/else` over `case` if there are only 2 condition
+  - different if it's dealing with error tuples
+- multiple assertions in a test are preferable over recreating the exact same scenario multiple times
+- Oh go no tests do not need giant headings/separators before describes
+- where possible, an exhaustive `result == [:a, :b, :c, :d]` is better than a test that makes sure all of :a, :b, :c, and :d are in the result but `:f` isn't

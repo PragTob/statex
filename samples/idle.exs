@@ -1,0 +1,5 @@
+Statex.define()
+|> Statex.add_state(:idle, initial: true)
+|> Statex.add_state(:running)
+|> Statex.add_transition(:idle, :start, :running)
+|> Statex.compile!()
