@@ -1,6 +1,6 @@
 FROM hexpm/elixir:1.19.5-erlang-28.5-debian-trixie-20260421
 
-# Core build dependencies (NOT git anymore — handled via features)
+# Core build dependencies (the common-utils feature adds the non-root user + shell ergonomics)
 RUN apt-get update && apt-get install -y \
     git \
     build-essential \
@@ -9,11 +9,10 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Ensure Hex + Rebar exist for any mix operations
-RUN mix local.hex --force && \
-    mix local.rebar --force
-
 # Optional but helpful for debugging / shell ergonomics
 ENV ERL_AFLAGS="+B -kernel shell_history enabled"
+
+# Hex + Rebar are installed per-user in postCreateCommand (see devcontainer.json),
+# since they live in the user's ~/.mix and the container no longer runs as root.
 
 WORKDIR /workspace
